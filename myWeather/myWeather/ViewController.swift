@@ -12,12 +12,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet var table: UITableView!
     
-    var models = [Daily]()
-    var hourlyModels = [Current]()
+    private var models = [Daily]()
+    private var hourlyModels = [Current]()
     
-    let locationManager = CLLocationManager()
-    var currentLocation: CLLocation?
-    var current: Current?
+    private let locationManager = CLLocationManager()
+    private var currentLocation: CLLocation?
+    private var current: Current?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,17 +28,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         table.delegate = self
         table.dataSource = self
         
-        table.backgroundColor = UIColor(red: 52/255.0, green: 109/255.0, blue: 179/255.0, alpha: 1.0)
-        view.backgroundColor = UIColor(red: 52/255.0, green: 109/255.0, blue: 179/255.0, alpha: 1.0)
+        table.backgroundColor = UIColor(red: 52 / 255.0, green: 109 / 255.0, blue: 179 / 255.0, alpha: 1.0)
+        view.backgroundColor = UIColor(red: 52 / 255.0, green: 109 / 255.0, blue: 179 / 255.0, alpha: 1.0)
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+         
         setupLocation()
     }
     
-    // Location
+    //MARK: Location
     
     func setupLocation() {
         locationManager.delegate = self
@@ -55,9 +56,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func requestWeatherForLocation() {
-        guard let currentLocation = currentLocation else {
-            return
-        }
+        guard let currentLocation = currentLocation else { return }
         
         let long = currentLocation.coordinate.longitude
         let lat = currentLocation.coordinate.latitude
@@ -76,26 +75,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             // Convert data to models/some obj
             
             var json: WeatherResponse?
-            do{
+            do {
                 json = try JSONDecoder().decode(WeatherResponse.self, from: data)
-            }
-            catch {
+            } catch {
                 print("error: \(error)")
             }
-            
-            guard let result = json else {
-                return
-            }
-
+            guard let result = json else {return }
             let entries = result.daily
-
             self.models.append(contentsOf: entries)
-            
             let current = result.current
             self.current = current
-            
             self.hourlyModels = result.hourly
-            
             
             //Update user interface
             DispatchQueue.main.async {

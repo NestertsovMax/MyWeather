@@ -14,7 +14,6 @@ class WeatherTableViewCell: UITableViewCell {
     @IBOutlet var lowTempLabel: UILabel!
     @IBOutlet var iconImageView: UIImageView!
 
-
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -27,9 +26,7 @@ class WeatherTableViewCell: UITableViewCell {
     
     static let identifier = "WeatherTableViewCell"
     
-    static func nib() -> UINib {
-        return UINib(nibName: "WeatherTableViewCell", bundle: nil)
-    }
+    static func nib() -> UINib { return UINib(nibName: "WeatherTableViewCell", bundle: nil) }
     
     func configure(with model: Daily) {
         self.highTempLabel.textAlignment = .center
@@ -48,9 +45,7 @@ class WeatherTableViewCell: UITableViewCell {
     }
     
     func getDayForDate(_ date: Date?) -> String {
-        guard let inputDate = date else {
-            return ""
-        }
+        guard let inputDate = date else { return "" }
         
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE"
